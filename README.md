@@ -2,7 +2,7 @@
 
 Map API microservice built with FastAPI.
 
-Kubernetes manifests live in the sibling `kustomization-resources-applications` repo.
+Kubernetes manifests live in the sibling `kustomization-resources-applications` repo (`apps/map-api`, image `map-api:01`).
 
 ## Endpoints
 
@@ -32,8 +32,15 @@ Open the GUI at `http://localhost:8002/` and API docs at `http://localhost:8002/
 ## Docker
 
 ```bash
-docker build -t map-api:local .
+docker build -t map-api:01 .
 docker compose up --build
 ```
 
 Local host port: **8002** (`http://localhost:8002`).
+
+## Kubernetes
+
+```bash
+docker build -t map-api:01 .
+kubectl apply -k ../kustomization-resources-applications/apps/map-api/overlays/local
+```
