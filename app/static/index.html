@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <p class="kicker">Map API</p>
+      <h1>Find a place</h1>
+    </header>
+    <form id="form">
+      <label>
+        City
+        <input id="city" type="text" placeholder="Berlin" value="Berlin" autocomplete="off" />
+      </label>
+      <div class="row">
+        <label>
+          Latitude
+          <input id="latitude" type="number" step="any" placeholder="52.52" />
+        </label>
+        <label>
+          Longitude
+          <input id="longitude" type="number" step="any" placeholder="13.41" />
+        </label>
+      </div>
+      <button type="submit">Show on map</button>
+    </form>
+    <p id="status" class="status" hidden></p>
+    <section id="result" hidden>
+      <p id="place" class="place"></p>
+      <div id="map"></div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

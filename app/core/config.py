@@ -4,12 +4,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     app_name: str = "map-api-fastapi"
     log_level: str = "INFO"
 
     open_meteo_geocoding_base_url: str = "https://geocoding-api.open-meteo.com/v1"
+    nominatim_base_url: str = "https://nominatim.openstreetmap.org"
     http_timeout_seconds: float = 10.0
 
 
