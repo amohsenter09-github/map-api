@@ -1,0 +1,17 @@
+__pycache__/
+*.py[codz]
+.Python
+.venv/
+venv/
+.env
+.envrc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.cursorignore
+.cursorindexingignore

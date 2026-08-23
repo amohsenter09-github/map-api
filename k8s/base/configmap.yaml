@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: map-api
+  labels:
+    app: map-api
+data:
+  APP_NAME: map-api-fastapi
+  LOG_LEVEL: INFO
+  OPEN_METEO_GEOCODING_BASE_URL: https://geocoding-api.open-meteo.com/v1
+  HTTP_TIMEOUT_SECONDS: "10"

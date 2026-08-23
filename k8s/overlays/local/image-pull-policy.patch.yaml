@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: map-api
+          imagePullPolicy: IfNotPresent

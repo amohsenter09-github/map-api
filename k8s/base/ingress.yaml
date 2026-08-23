@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: map-api
+  labels:
+    app: map-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: map-api.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: map-api
+                port:
+                  name: http
