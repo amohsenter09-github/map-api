@@ -10,7 +10,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.api.health import router as health_router
 from app.api.map import router as map_router
 from app.api.pins import router as pins_router
-from app.core.config import get_settings
+from app.core.config import UI_THEMES, get_settings
 from app.core.logging import configure_logging
 from app.db.session import close_db, init_db
 
@@ -46,12 +46,17 @@ def create_app() -> FastAPI:
     async def ui():
         html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
         theme = (settings.ui_theme or "orange").strip().lower()
-        if theme not in {"orange", "green"}:
+        if theme == "grey":
+            theme = "gray"
+        if theme not in UI_THEMES:
             theme = "orange"
         html = html.replace('data-theme="orange"', f'data-theme="{theme}"', 1)
         if theme == "green":
             html = html.replace(">Map API<", ">Map API · production<")
             html = html.replace("<title>Map</title>", "<title>Map · production</title>")
+        elif theme == "blue":
+            html = html.replace(">Map API<", ">Map API · development<")
+            html = html.replace("<title>Map</title>", "<title>Map · development</title>")
         return HTMLResponse(html)
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

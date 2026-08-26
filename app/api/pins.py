@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.schemas import PinCreate, PinList, PinOut
+from app.api.schemas import NoteCreate, NoteList, NoteOut, PinCreate, PinList, PinOut, PinUpdate
 from app.core.config import get_settings
-from app.db.models import Pin
+from app.db.models import Note, Pin
 from app.db.session import get_session
 from app.services.map_client import MapClient
 
@@ -103,8 +103,46 @@ async def reverse_pin(pin_id: UUID, session: AsyncSession = Depends(get_session)
     pin.name = geo.get("name")
     pin.country = geo.get("country")
     pin.admin1 = geo.get("admin1")
+    pin.address = ", ".join(part for part in [pin.name, pin.admin1, pin.country] if part)
     if not pin.label:
         pin.label = pin.name or pin.label
     await session.commit()
     await session.refresh(pin)
     return pin
+
+
+@router.put("/pins/{pin_id}", response_model=PinOut)
+async def update_pin(pin_id: UUID, body: PinUpdate, session: AsyncSession = Depends(get_session)):
+    pin = await session.get(Pin, pin_id)
+    if pin is None:
+        raise HTTPException(status_code=404, detail="Pin not found")
+    if body.label and body.label.strip():
+        pin.label = body.label.strip()
+    if body.latitude is not None:
+        pin.latitude = body.latitude
+    if body.longitude is not None:
+        pin.longitude = body.longitude
+    await session.commit()
+    await session.refresh(pin)
+    return pin
+
+
+@router.post("/pins/{pin_id}/notes", status_code=201, response_model=NoteOut)
+async def add_note(pin_id: UUID, body: NoteCreate, session: AsyncSession = Depends(get_session)):
+    pin = await session.get(Pin, pin_id)
+    if pin is None:
+        raise HTTPException(status_code=404, detail="Pin not found")
+    note = Note(pin_id=pin.id, body=body.body.strip())
+    session.add(note)
+    await session.commit()
+    await session.refresh(note)
+    return note
+
+
+@router.get("/pins/{pin_id}/notes", response_model=NoteList)
+async def list_notes(pin_id: UUID, session: AsyncSession = Depends(get_session)):
+    pin = await session.get(Pin, pin_id)
+    if pin is None:
+        raise HTTPException(status_code=404, detail="Pin not found")
+    result = await session.execute(select(Note).where(Note.pin_id == pin_id).order_by(Note.created_at.desc()))
+    return NoteList(notes=list(result.scalars().all()))

@@ -15,7 +15,10 @@ Kubernetes manifests live in the sibling `kustomization-resources-applications` 
 - `GET /pins` -> list saved pins
 - `GET /pins/{id}` -> one pin
 - `DELETE /pins/{id}` -> remove a pin
-- `POST /pins/{id}/reverse` -> fill name/country from Nominatim and store it
+- `POST /pins/{id}/reverse` -> fill name/country/address from Nominatim and store it
+- `PUT /pins/{id}` -> move or rename a pin
+- `POST /pins/{id}/notes` -> `{ "body": "met here" }`
+- `GET /pins/{id}/notes` -> notes on a pin
 
 ### `GET /map` query params
 

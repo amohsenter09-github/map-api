@@ -20,6 +20,21 @@ class Settings(BaseSettings):
     ui_theme: str = "orange"
 
 
+UI_THEMES = frozenset({
+    "blue",
+    "green",
+    "yellow",
+    "orange",
+    "red",
+    "purple",
+    "pink",
+    "brown",
+    "black",
+    "white",
+    "gray",
+})
+
+
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     return Settings()
