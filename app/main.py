@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(_app: FastAPI):
     try:
         await init_db()
-    except SQLAlchemyError:
+    except Exception:
         logger.exception("Postgres is not reachable; GET /map still works, POST /pins will fail")
     yield
     await close_db()
@@ -44,7 +44,15 @@ def create_app() -> FastAPI:
 
     @app.get("/", include_in_schema=False)
     async def ui():
-        return FileResponse(STATIC_DIR / "index.html")
+        html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+        theme = (settings.ui_theme or "orange").strip().lower()
+        if theme not in {"orange", "green"}:
+            theme = "orange"
+        html = html.replace('data-theme="orange"', f'data-theme="{theme}"', 1)
+        if theme == "green":
+            html = html.replace(">Map API<", ">Map API · production<")
+            html = html.replace("<title>Map</title>", "<title>Map · production</title>")
+        return HTMLResponse(html)
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     return app

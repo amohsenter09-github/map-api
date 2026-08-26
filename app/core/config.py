@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     nominatim_base_url: str = "https://nominatim.openstreetmap.org"
     http_timeout_seconds: float = 10.0
     database_url: str = "postgresql+asyncpg://map:map@127.0.0.1:5433/map"
+    ui_theme: str = "orange"
 
 
 @lru_cache(maxsize=1)
