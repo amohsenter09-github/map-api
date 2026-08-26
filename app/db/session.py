@@ -18,10 +18,28 @@ def _get_engine():
     return _engine
 
 
+def _ensure_columns(sync_conn) -> None:
+    """create_all does not add columns to existing Kind volumes."""
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(sync_conn)
+    for table in Base.metadata.sorted_tables:
+        if not inspector.has_table(table.name):
+            continue
+        existing = {col["name"] for col in inspector.get_columns(table.name)}
+        for col in table.columns:
+            if col.name in existing:
+                continue
+            col_type = col.type.compile(dialect=sync_conn.dialect)
+            null_sql = "" if col.nullable else " NOT NULL"
+            sync_conn.execute(text(f'ALTER TABLE "{table.name}" ADD COLUMN "{col.name}" {col_type}{null_sql}'))
+
+
 async def init_db() -> None:
     engine = _get_engine()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(_ensure_columns)
 
 
 async def close_db() -> None:
