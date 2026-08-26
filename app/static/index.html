@@ -29,11 +29,16 @@
         </label>
       </div>
       <button type="submit">Show on map</button>
+      <button id="save" type="button" class="secondary">Save pin</button>
     </form>
     <p id="status" class="status" hidden></p>
     <section id="result" hidden>
       <p id="place" class="place"></p>
       <div id="map"></div>
+    </section>
+    <section id="pins-wrap">
+      <h2>Saved pins</h2>
+      <ul id="pins" class="pin-list"></ul>
     </section>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

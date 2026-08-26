@@ -63,6 +63,37 @@ button {
   cursor: pointer;
   font-family: "Segoe UI", sans-serif;
 }
+button.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+h2 {
+  margin: 28px 0 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.pin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.pin-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #4a3c2e;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+.pin-list button {
+  width: auto;
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
 .status { color: var(--muted); }
 .status.error { color: var(--danger); }
 .place { margin: 18px 0 10px; }
