@@ -30,15 +30,42 @@
       </div>
       <button type="submit">Show on map</button>
       <button id="save" type="button" class="secondary">Save pin</button>
+      <button id="locate" type="button" class="secondary">Use my location</button>
     </form>
     <p id="status" class="status" hidden></p>
     <section id="result" hidden>
       <p id="place" class="place"></p>
       <div id="map"></div>
     </section>
+    <section class="activity-panel">
+      <h2>Live activity</h2>
+      <div class="row">
+        <label>
+          Kind
+          <select id="activity-kind">
+            <option value="walk">Walk</option>
+            <option value="run">Run</option>
+            <option value="bike">Bike</option>
+            <option value="commute">Commute</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>
+          Label
+          <input id="activity-label" type="text" placeholder="Evening walk" maxlength="200" />
+        </label>
+      </div>
+      <button id="activity-toggle" type="button">Start activity</button>
+      <div id="live-chips" class="chips" hidden></div>
+      <p id="activity-hint" class="meta">On a phone, allow location. On a laptop, click the map to move the trail.</p>
+    </section>
     <section id="pins-wrap">
       <h2>Saved pins</h2>
       <ul id="pins" class="pin-list"></ul>
+    </section>
+    <section>
+      <h2>Activities</h2>
+      <ul id="activities" class="pin-list"></ul>
     </section>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

@@ -152,7 +152,7 @@ body {
     var(--bg);
   color: var(--ink);
 }
-.shell { max-width: 760px; margin: 0 auto; padding: 48px 20px; }
+.shell { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
 .kicker {
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -175,7 +175,8 @@ label {
   margin-bottom: 12px;
   font-family: "Segoe UI", sans-serif;
 }
-input {
+input,
+select {
   width: 100%;
   margin-top: 6px;
   padding: 10px 12px;
@@ -238,4 +239,27 @@ h2 {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--line);
+}
+.activity-panel {
+  margin-top: 28px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.activity-panel h2 { margin-top: 0; }
+.meta { color: var(--muted); margin: 10px 0 0; font-size: 0.9rem; }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.85rem;
 }

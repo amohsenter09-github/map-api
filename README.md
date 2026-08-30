@@ -19,6 +19,12 @@ Kubernetes manifests live in the sibling `kustomization-resources-applications` 
 - `PUT /pins/{id}` -> move or rename a pin
 - `POST /pins/{id}/notes` -> `{ "body": "met here" }`
 - `GET /pins/{id}/notes` -> notes on a pin
+- `POST /activities` -> start a live activity (`{"kind":"walk","label":"Evening walk"}`)
+- `POST /activities/{id}/points` -> record GPS (`{"latitude":52.52,"longitude":13.41}`); weather + AQI are sampled if omitted
+- `POST /activities/{id}/stop` -> finish, store distance and duration
+- `GET /activities` -> list activities
+- `GET /activities/{id}` -> trail + condition samples
+- `DELETE /activities/{id}`
 
 ### `GET /map` query params
 

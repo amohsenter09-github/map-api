@@ -59,3 +59,54 @@ class NoteOut(BaseModel):
 class NoteList(BaseModel):
     notes: list[NoteOut]
 
+
+class ActivityCreate(BaseModel):
+    label: str | None = Field(default=None, max_length=200)
+    kind: str = Field(default="walk", max_length=40)
+
+
+class ActivityPointCreate(BaseModel):
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
+    temperature: float | None = None
+    windspeed: float | None = None
+    weathercode: float | None = None
+    us_aqi: float | None = None
+    pm2_5: float | None = None
+
+
+class ActivityPointOut(BaseModel):
+    id: UUID
+    latitude: float
+    longitude: float
+    temperature: float | None
+    windspeed: float | None
+    weathercode: float | None
+    us_aqi: float | None
+    pm2_5: float | None
+    recorded_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ActivityOut(BaseModel):
+    id: UUID
+    label: str
+    kind: str
+    started_at: datetime
+    ended_at: datetime | None
+    distance_m: float | None
+    duration_s: float | None
+    point_count: int = 0
+    alerts: list[str] = []
+
+    model_config = {"from_attributes": True}
+
+
+class ActivityDetail(ActivityOut):
+    points: list[ActivityPointOut] = []
+
+
+class ActivityList(BaseModel):
+    activities: list[ActivityOut]
+

@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     open_meteo_geocoding_base_url: str = "https://geocoding-api.open-meteo.com/v1"
+    open_meteo_base_url: str = "https://api.open-meteo.com/v1"
+    open_meteo_air_quality_base_url: str = "https://air-quality-api.open-meteo.com/v1"
     nominatim_base_url: str = "https://nominatim.openstreetmap.org"
     http_timeout_seconds: float = 10.0
     database_url: str = "postgresql+asyncpg://map:map@127.0.0.1:5433/map"

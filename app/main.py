@@ -7,6 +7,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.api.activities import router as activities_router
 from app.api.health import router as health_router
 from app.api.map import router as map_router
 from app.api.pins import router as pins_router
@@ -23,7 +24,7 @@ async def lifespan(_app: FastAPI):
     try:
         await init_db()
     except Exception:
-        logger.exception("Postgres is not reachable; GET /map still works, POST /pins will fail")
+        logger.exception("Postgres is not reachable; GET /map still works, POST /pins and /activities will fail")
     yield
     await close_db()
 
@@ -36,6 +37,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(map_router)
     app.include_router(pins_router)
+    app.include_router(activities_router)
 
     @app.exception_handler(SQLAlchemyError)
     async def db_error(_request, _exc):
