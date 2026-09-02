@@ -11,11 +11,11 @@ Live trail UI (Leaflet), saved pins, and activity points enriched with Open-Mete
 | This app + Dockerfile | [map-api](https://github.com/amohsenter09-github/map-api) |
 | Kustomize base + overlays | [kustomization-resources-applications](https://github.com/amohsenter09-github/kustomization-resources-applications) (`apps/map-api`) |
 | Argo CD Application | [bootstrap-control-plane](https://github.com/amohsenter09-github/bootstrap-control-plane) (`app-map-dev`, `app-map-prod`) |
-| Cluster, registry, DNS | [scaleway-infrastructure](https://github.com/amohsenter09-github/scaleway-infrastructure) |
+| Cluster, registry, DNS | [aws-infrastructure](https://github.com/amohsenter09-github/aws-infrastructure) (EKS + ECR) |
 
-Argo CD watches the Kustomize overlay. Image Updater watches `rg.fr-par.scw.cloud/cnpe/map-api:02` and rolls a new digest without a tag bump.
+Argo CD watches the Kustomize overlay. Image Updater watches `ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com/cnpe/map-api:02` and rolls a new digest without a tag bump.
 
-**Scaleway URLs:** https://map-api.cnpe-dev.cloud-master-ai.com · https://map-api.cnpe-prod.cloud-master-ai.com
+**URLs:** https://map-api.cnpe-dev.cloud-master-ai.com · https://map-api.cnpe-prod.cloud-master-ai.com
 
 ## Implementation
 
@@ -53,13 +53,16 @@ UI: http://localhost:8002/ · docs: http://localhost:8002/docs
 
 Or `docker compose up --build` (API **8002**, Postgres host **5433**).
 
-## Image for Kapsule
+## Image for EKS
 
 Nodes are `linux/amd64`. From this directory (not the parent folder):
 
 ```bash
+aws ecr get-login-password --region eu-west-1 \
+  | docker login --username AWS --password-stdin ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com
+
 docker buildx build --platform linux/amd64 --provenance=false --sbom=false \
-  -t rg.fr-par.scw.cloud/cnpe/map-api:02 --push .
+  -t ACCOUNT.dkr.ecr.eu-west-1.amazonaws.com/cnpe/map-api:02 --push .
 ```
 
-Kind local overlay still uses `map-api:01`.
+Or `../aws-infrastructure/scripts/push-images.sh`.
